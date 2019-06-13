@@ -2,21 +2,18 @@ package com.radek.store.entity.users;
 
 
 import com.radek.store.entity.AbstractEntity;
+import com.radek.store.entity.Role;
 import com.radek.store.entity.Store;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.HashSet;
+import java.util.Set;
 
-@Table(name = "users")
-@Data
+
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User extends AbstractEntity {
+public abstract class User extends AbstractEntity {
 
 
     private String name;
@@ -31,7 +28,17 @@ public class User extends AbstractEntity {
     private String password;
     private String phoneNumber;
 
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles = new HashSet<>();
 
     @Column(name = "is_expired")
     private boolean expired;

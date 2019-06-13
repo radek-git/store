@@ -24,7 +24,7 @@ public class Product extends AbstractEntity{
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Category category;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Brand brand;
 
 

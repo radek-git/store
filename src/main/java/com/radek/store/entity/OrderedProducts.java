@@ -8,28 +8,33 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Table(name = "stocks")
-@Data
+@Table(name = "ordered_products")
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Stock extends AbstractEntity{
+public class OrderedProducts {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
-
-    @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     private BigDecimal quantity;
 
+    private BigDecimal price;
 
-    public Stock(Store store, Product product) {
-        this.store = store;
+    private int position;
+
+
+
+    public OrderedProducts(Product product, Order order) {
         this.product = product;
+        this.order = order;
     }
 }
