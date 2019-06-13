@@ -15,8 +15,7 @@ import javax.validation.constraints.Email;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@DiscriminatorColumn(name = "USER_TYPE_ID", discriminatorType = DiscriminatorType.INTEGER)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User extends AbstractEntity {
 
 

@@ -58,16 +58,10 @@ create table stocks
 
 );
 
-create table user_types
-(
-    id   int primary key auto_increment,
-    type varchar(50) unique not null
-);
 
 create table users
 (
     id                     bigint primary key auto_increment,
-    user_type_id           int                not null,
     name                   varchar(50)        not null,
     surname                varchar(50)        not null,
     username               varchar(50) unique not null,
@@ -82,8 +76,7 @@ create table users
     created_at             timestamp          not null,
     updated_at             timestamp          not null,
 
-    foreign key (store_id) references stores (id),
-    foreign key (user_type_id) references user_types(id)
+    foreign key (store_id) references stores (id)
 
 );
 

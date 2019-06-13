@@ -5,9 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "Employee")
 @NoArgsConstructor
-@DiscriminatorValue("2")
 public class Employee extends User{
 
 
