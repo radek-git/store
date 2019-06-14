@@ -1,3 +1,7 @@
+create sequence users_sequence start with 1 increment by 1 minvalue 1 maxvalue 999999999999 cache 1;
+
+
+
 create table categories
 (
     id         bigint primary key auto_increment,
@@ -16,20 +20,14 @@ create table brands
 );
 
 
-create table products
+create table positions
 (
-    id          bigint primary key auto_increment,
-    name        varchar(50) not null,
-    price       decimal     not null,
-    category_id bigint      not null,
-    brand_id    bigint      not null,
-    created_at  timestamp   not null,
-    updated_at  timestamp   not null,
-
-    foreign key (category_id) references categories (id),
-    foreign key (brand_id) references brands (id)
-
+    id         bigint primary key auto_increment,
+    name       varchar(50) unique not null,
+    created_at timestamp          not null,
+    updated_at timestamp          not null
 );
+
 
 
 create table stores
@@ -43,13 +41,60 @@ create table stores
 );
 
 
-create table stocks
+create table employees
 (
-    store_id   bigint    not null,
-    product_id bigint    not null,
-    quantity   decimal   not null,
-    created_at timestamp not null,
-    updated_at timestamp not null,
+    id                     bigint                      default users_sequence.nextval primary key,
+    name                   varchar(50)        not null,
+    surname                varchar(50)        not null,
+    username               varchar(50) unique not null,
+    email                  varchar(50) unique not null,
+    password               varchar(60)        not null,
+    phone_number           varchar(50)        not null,
+
+    store_id               bigint             not null,
+    position_id            bigint             not null,
+    added_by_employee_id   bigint             not null,
+
+    is_expired             boolean            not null default false,
+    is_locked              boolean            not null default false,
+    is_credentials_expired boolean            not null default false,
+    is_enabled             boolean            not null default false,
+    created_at             timestamp          not null,
+    updated_at             timestamp          not null,
+
+
+    foreign key (position_id) references positions (id),
+    foreign key (store_id) references stores (id)
+);
+
+
+
+create table products
+(
+    id                     bigint primary key auto_increment,
+    name                   varchar(50) not null,
+    price                  decimal     not null,
+    category_id            bigint      not null,
+    brand_id               bigint      not null,
+    created_at             timestamp   not null,
+    updated_at             timestamp   not null,
+    added_by_employee_id   bigint      not null,
+    updated_by_employee_id bigint      not null,
+
+    foreign key (category_id) references categories (id),
+    foreign key (brand_id) references brands (id),
+    foreign key (added_by_employee_id) references employees (id),
+    foreign key (updated_by_employee_id) references employees (id)
+
+);
+
+
+
+create table store_products
+(
+    store_id   bigint  not null,
+    product_id bigint  not null,
+    quantity   decimal not null,
 
     foreign key (store_id) references stores (id),
     foreign key (product_id) references products (id),
@@ -60,51 +105,20 @@ create table stocks
 
 
 
-create table employees
-(
-    id                     bigint primary key auto_increment,
-    name                   varchar(50)        not null,
-    surname                varchar(50)        not null,
-    username               varchar(50) unique not null,
-    email                  varchar(50) unique not null,
-    password               varchar(50)        not null,
-    phone_number           varchar(50)        not null,
-
-    store_id               bigint             not null,
-    position_id            int                not null,
-
-    is_expired             boolean            not null default false,
-    is_locked              boolean            not null default false,
-    is_credentials_expired boolean            not null default false,
-    is_enabled             boolean            not null default false,
-    created_at             timestamp          not null,
-    updated_at             timestamp          not null,
-
-
-    foreign key (position_id) references positions (id)
-);
-
-create table positions
-(
-    id         bigint primary key auto_increment,
-    name       varchar(50) unique not null,
-    created_at timestamp          not null,
-    updated_at timestamp          not null
-);
-
 create table customers
 (
-    id                     bigint primary key auto_increment,
+    id                     bigint                      default users_sequence.nextval primary key,
     name                   varchar(50)        not null,
     surname                varchar(50)        not null,
     username               varchar(50) unique not null,
     email                  varchar(50) unique not null,
-    password               varchar(50)        not null,
+    password               varchar(60)        not null,
     phone_number           varchar(50)        not null,
 
     street                 varchar(50),
     city                   varchar(50),
-    postcode               varchar(50),
+    postal_code            varchar(50),
+    added_by_employee_id   bigint,
 
     is_expired             boolean            not null default false,
     is_locked              boolean            not null default false,
@@ -140,22 +154,24 @@ create table user_roles
 create table orders
 (
     id          bigint primary key auto_increment,
-    customer_id bigint    not null,
+    customer_id bigint,
+    employee_id bigint,
     store_id    bigint    not null,
     created_at  timestamp not null,
     updated_at  timestamp not null,
     total_price decimal   not null,
 
     foreign key (store_id) references stores (id),
-    foreign key (customer_id) references customers (id)
+    foreign key (customer_id) references customers (id),
+    foreign key (employee_id) references employees (id)
 );
 
 
 
 create table ordered_products
 (
-    product_id bigint  not null,
     order_id   bigint  not null,
+    product_id bigint  not null,
     quantity   decimal not null,
     price      decimal not null,
     position   int     not null,
