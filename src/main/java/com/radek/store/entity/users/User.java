@@ -4,34 +4,53 @@ package com.radek.store.entity.users;
 import com.radek.store.entity.AbstractEntity;
 import com.radek.store.entity.Role;
 import com.radek.store.entity.Store;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User extends AbstractEntity {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@RequiredArgsConstructor
+public abstract class User  {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_sequence")
+    @SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence")
+    private long id;
 
+    @NonNull
     private String name;
+
+    @NonNull
     private String surname;
 
+    @NonNull
     @Column(unique = true)
     private String username;
 
+    @NonNull
     @Email
     @Column(unique = true)
     private String email;
+
+    @NonNull
     private String password;
+
+    @NonNull
     private String phoneNumber;
 
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "store_id", referencedColumnName = "id")
-    private Store store;
+
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -51,5 +70,11 @@ public abstract class User extends AbstractEntity {
 
     @Column(name = "is_enabled")
     private boolean enabled;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
 }

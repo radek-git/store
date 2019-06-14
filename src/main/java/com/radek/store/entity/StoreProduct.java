@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Table(name = "stocks")
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Stock extends AbstractEntity{
+public class StoreProduct implements Serializable {
 
     @Id
     @ManyToOne
@@ -28,7 +29,7 @@ public class Stock extends AbstractEntity{
     private BigDecimal quantity;
 
 
-    public Stock(Store store, Product product) {
+    public StoreProduct(Store store, Product product) {
         this.store = store;
         this.product = product;
     }

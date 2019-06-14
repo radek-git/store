@@ -2,6 +2,7 @@ package com.radek.store.entity;
 
 
 import com.radek.store.entity.users.Customer;
+import com.radek.store.entity.users.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,9 @@ public class Order extends AbstractEntity{
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Employee employee;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Store store;
