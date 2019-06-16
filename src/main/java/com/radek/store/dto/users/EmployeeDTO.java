@@ -11,4 +11,5 @@ public class EmployeeDTO extends UserDTO {
 
     private Long storeId;
     private Long positionId;
+
 }

@@ -2,11 +2,10 @@ package com.radek.store.entity.users;
 
 import com.radek.store.entity.Position;
 import com.radek.store.entity.Store;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Table(name = "employees")
 @Entity(name = "Employee")
@@ -14,6 +13,16 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 public class Employee extends User{
+
+    @Builder
+    public Employee(@NonNull String name, @NonNull String surname, @NonNull String username,
+                    @NonNull @Email String email, @NonNull String password, @NonNull String phoneNumber,
+                    Store store, Position position,  Employee addedBy) {
+        super(name, surname, username, email, password, phoneNumber);
+        this.store = store;
+        this.position = position;
+        this.addedBy = addedBy;
+    }
 
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
