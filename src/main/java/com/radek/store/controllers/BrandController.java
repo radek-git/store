@@ -39,10 +39,10 @@ public class BrandController {
         return brandMapper.toDTO(brandService.save(brand));
     }
 
-    @PatchMapping("/brands")
-    public BrandDTO updateBrand(@RequestBody Brand brand) {
-        return brandMapper.toDTO(brandService.save(brand));
-    }
+//    @PatchMapping("/brands/{name}")
+//    public BrandDTO updateBrand(@PathVariable String name, @RequestBody Brand brand) {
+//
+//    }
 
 //    @DeleteMapping("/brands/{name}")
 //    public ResponseEntity<Object> deleteByName(@PathVariable String name) {
