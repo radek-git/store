@@ -44,26 +44,26 @@ public class DataGenerator implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Role roleAdmin = new Role("ROLE_ADMIN");
-        Role roleUser = new Role("ROLE_USER");
-
-        Customer customer = Customer.builder()
-                .name("Jan")
-                .surname("Nowak")
-                .username("jnowak")
-                .email("jnowak@wp.pl")
-                .password("$2a$10$8lM7EkU28dbwN59NxSQGNe4/cuJu9bc822rSfFAVw69blKyJbMgbq")
-                .phoneNumber("88788868768")
-                .street("Rybia 5")
-                .city("Płońsk")
-                .postalCode("88981")
-                .build();
-
-
-        customer.getRoles().add(roleUser);
-
-        customerRepository.save(customer);
-
+//        Role roleAdmin = new Role("ROLE_ADMIN");
+//        Role roleUser = new Role("ROLE_USER");
+//
+//        Customer customer = Customer.builder()
+//                .name("Jan")
+//                .surname("Nowak")
+//                .username("jnowak")
+//                .email("jnowak@wp.pl")
+//                .password("$2a$10$8lM7EkU28dbwN59NxSQGNe4/cuJu9bc822rSfFAVw69blKyJbMgbq")
+//                .phoneNumber("88788868768")
+//                .street("Rybia 5")
+//                .city("Płońsk")
+//                .postalCode("88981")
+//                .build();
+//
+//
+//        customer.getRoles().add(roleUser);
+//
+//        customerRepository.save(customer);
+//
 
 
     }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class UserDTO extends AbstractDTO {
+public class UserDTO extends AbstractDTO {
 
     private String name;
     private String surname;

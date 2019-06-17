@@ -1,0 +1,10 @@
+insert into stores (name, phone_number) values ('Beatty, Parisian and Bergnaum', '567-349-4007');
+insert into stores (name, phone_number) values ('Witting-Ferry', '402-652-3959');
+insert into stores (name, phone_number) values ('Carroll Inc', '819-205-3501');
+insert into stores (name, phone_number) values ('Lakin, Ziemann and Botsford', '259-157-2028');
+insert into stores (name, phone_number) values ('Feeney-Greenfelder', '242-179-5427');
+insert into stores (name, phone_number) values ('O''Connell, McCullough and Kunde', '303-502-7611');
+insert into stores (name, phone_number) values ('Parisian, Ward and Waters', '494-131-9044');
+insert into stores (name, phone_number) values ('Yundt, Cartwright and Aufderhar', '474-546-8198');
+insert into stores (name, phone_number) values ('Klein, Altenwerth and Towne', '662-421-3914');
+insert into stores (name, phone_number) values ('Dickinson, Conn and Kiehn', '296-338-4560');

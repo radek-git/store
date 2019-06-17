@@ -1,0 +1,10 @@
+insert into brands (name) values ('Echo');
+insert into brands (name) values ('Victor');
+insert into brands (name) values ('India');
+insert into brands (name) values ('Uniform');
+insert into brands (name) values ('Bravo');
+insert into brands (name) values ('Delta');
+insert into brands (name) values ('Delta');
+insert into brands (name) values ('Zulu');
+insert into brands (name) values ('Bravo');
+insert into brands (name) values ('Bravo');

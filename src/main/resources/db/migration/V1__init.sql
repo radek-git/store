@@ -6,8 +6,8 @@ create table categories
 (
     id         bigint primary key auto_increment,
     name       varchar(50) unique not null,
-    created_at timestamp          not null,
-    updated_at timestamp          not null
+    created_at timestamp          not null default current_timestamp(),
+    updated_at timestamp          not null default current_timestamp(),
 );
 
 
@@ -15,8 +15,8 @@ create table brands
 (
     id         bigint primary key auto_increment,
     name       varchar(50) not null,
-    created_at timestamp   not null,
-    updated_at timestamp   not null
+    created_at timestamp   not null default current_timestamp(),
+    updated_at timestamp   not null default current_timestamp(),
 );
 
 
@@ -24,8 +24,8 @@ create table positions
 (
     id         bigint primary key auto_increment,
     name       varchar(50) unique not null,
-    created_at timestamp          not null,
-    updated_at timestamp          not null
+    created_at timestamp          not null default current_timestamp(),
+    updated_at timestamp          not null default current_timestamp(),
 );
 
 
@@ -36,8 +36,8 @@ create table stores
     name         varchar(50) unique not null,
     phone_number varchar(50)        not null,
 
-    created_at   timestamp          not null,
-    updated_at   timestamp          not null
+    created_at   timestamp          not null default current_timestamp(),
+    updated_at   timestamp          not null default current_timestamp(),
 );
 
 
@@ -59,8 +59,8 @@ create table employees
     is_locked              boolean            not null default false,
     is_credentials_expired boolean            not null default false,
     is_enabled             boolean            not null default false,
-    created_at             timestamp          not null,
-    updated_at             timestamp          not null,
+    created_at             timestamp          not null default current_timestamp(),
+    updated_at             timestamp          not null default current_timestamp(),
 
 
     foreign key (position_id) references positions (id),
@@ -76,8 +76,8 @@ create table products
     price                  decimal     not null,
     category_id            bigint      not null,
     brand_id               bigint      not null,
-    created_at             timestamp   not null,
-    updated_at             timestamp   not null,
+    created_at             timestamp   not null default current_timestamp(),
+    updated_at             timestamp   not null default current_timestamp(),
     added_by_employee_id   bigint      not null,
     updated_by_employee_id bigint      not null,
 
@@ -124,8 +124,8 @@ create table customers
     is_locked              boolean            not null default false,
     is_credentials_expired boolean            not null default false,
     is_enabled             boolean            not null default false,
-    created_at             timestamp          not null,
-    updated_at             timestamp          not null
+    created_at             timestamp          not null default current_timestamp(),
+    updated_at             timestamp          not null default current_timestamp()
 );
 
 
@@ -133,8 +133,8 @@ create table roles
 (
     id         bigint primary key auto_increment,
     name       varchar(50) unique not null,
-    created_at timestamp          not null,
-    updated_at timestamp          not null
+    created_at timestamp          not null default current_timestamp(),
+    updated_at timestamp          not null default current_timestamp(),
 
 );
 
@@ -157,8 +157,8 @@ create table orders
     customer_id bigint,
     employee_id bigint,
     store_id    bigint    not null,
-    created_at  timestamp not null,
-    updated_at  timestamp not null,
+    created_at  timestamp not null default current_timestamp(),
+    updated_at  timestamp not null default current_timestamp(),
     total_price decimal   not null,
 
     foreign key (store_id) references stores (id),
@@ -168,7 +168,7 @@ create table orders
 
 
 
-create table ordered_products
+create table order_products
 (
     order_id   bigint  not null,
     product_id bigint  not null,

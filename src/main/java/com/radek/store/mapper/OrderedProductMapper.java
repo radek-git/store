@@ -1,7 +1,7 @@
 package com.radek.store.mapper;
 
 import com.radek.store.dto.OrderedProductDTO;
-import com.radek.store.entity.OrderedProduct;
+import com.radek.store.entity.OrderProduct;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -16,11 +16,11 @@ public interface OrderedProductMapper {
             @Mapping(target = "orderId", source = "order.id"),
             @Mapping(target = "productId", source = "product.id")
     })
-    OrderedProductDTO toDTO(OrderedProduct orderedProduct);
+    OrderedProductDTO toDTO(OrderProduct orderProduct);
 
-    List<OrderedProductDTO> toDTO(List<OrderedProduct> orderedProducts);
+    List<OrderedProductDTO> toDTO(List<OrderProduct> orderProducts);
 
-    OrderedProduct toEntity(OrderedProductDTO orderedProductDTO);
+    OrderProduct toEntity(OrderedProductDTO orderedProductDTO);
 
-    List<OrderedProduct> toEntity(List<OrderedProductDTO> orderedProductDTOS);
+    List<OrderProduct> toEntity(List<OrderedProductDTO> orderedProductDTOS);
 }

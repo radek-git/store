@@ -1,6 +1,7 @@
 package com.radek.store.mapper;
 
 
+import com.radek.store.dto.users.EmployeeDTO;
 import com.radek.store.entity.users.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,12 +16,10 @@ public interface EmployeeMapper {
             @Mapping(target = "storeId", source = "store.id"),
             @Mapping(target = "positionId", source = "position.id")
     })
-    EmployeeMapper toDTO(Employee employee);
+    EmployeeDTO toDTO(Employee employee);
 
-    List<EmployeeMapper> toDTO(List<Employee> employees);
+    List<EmployeeDTO> toDTO(List<Employee> employees);
 
-    Employee toEntity(EmployeeMapper employeeMapper);
 
-    List<Employee> toEntity(List<EmployeeMapper> employeeMappers);
 
 }

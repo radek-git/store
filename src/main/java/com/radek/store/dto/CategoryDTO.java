@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategortDTO extends AbstractDTO{
+public class CategoryDTO extends AbstractDTO{
 
     private String name;
 }

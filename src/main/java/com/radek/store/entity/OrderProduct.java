@@ -9,12 +9,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table(name = "ordered_products")
+@Table(name = "order_products")
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderedProduct implements Serializable {
+public class OrderProduct implements Serializable {
 
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
@@ -35,7 +35,7 @@ public class OrderedProduct implements Serializable {
 
 
 
-    public OrderedProduct(Product product, Order order) {
+    public OrderProduct(Product product, Order order) {
         this.product = product;
         this.order = order;
     }

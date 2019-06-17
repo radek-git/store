@@ -1,0 +1,10 @@
+insert into store_products (store_id, product_id, quantity) values (1, 7, 689);
+insert into store_products (store_id, product_id, quantity) values (5, 10, 430);
+insert into store_products (store_id, product_id, quantity) values (1, 4, 809);
+insert into store_products (store_id, product_id, quantity) values (3, 10, 564);
+insert into store_products (store_id, product_id, quantity) values (10, 2, 269);
+insert into store_products (store_id, product_id, quantity) values (2, 1, 75);
+insert into store_products (store_id, product_id, quantity) values (1, 10, 824);
+insert into store_products (store_id, product_id, quantity) values (9, 4, 157);
+insert into store_products (store_id, product_id, quantity) values (10, 1, 848);
+insert into store_products (store_id, product_id, quantity) values (9, 9, 822);

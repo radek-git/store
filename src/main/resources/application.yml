@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+
+
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2console
+  datasource:
+    url: jdbc:h2:file:./store_h2_db;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    dbcp2:
+      validation-query: SELECT 1
+    continue-on-error: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+
+
