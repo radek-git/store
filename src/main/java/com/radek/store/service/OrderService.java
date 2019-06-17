@@ -40,4 +40,13 @@ public class OrderService {
     }
 
 
+    public List<Order> findAllByUsername(String username) {
+        return orderRepository.findAllByCustomer_Username(username);
+    }
+
+//    public Order findAllByCustomer_UsernameAndOrderById(String username, Long id) {
+//        return orderRepository.findAllByCustomer_UsernameAndOrderById(username, id).orElseThrow(() -> new RuntimeException("Nie ma"));
+//    }
+
+
 }

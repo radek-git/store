@@ -45,5 +45,8 @@ public class CustomerService {
     }
 
 
+    public Customer findByUsername(String username) {
+        return customerRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Nie ma"));
+    }
 
 }
