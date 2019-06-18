@@ -1,11 +1,13 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.users.UserDTO;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.UserMapper;
 import com.radek.store.security.CurrentUser;
 import com.radek.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,27 +40,19 @@ public class UserController {
 //
 //    }
 
-//    @DeleteMapping("/user")
-//    public ResponseEntity<Object> deleteCurrentUser() {
-//        String username = currentUser.getUser().getUsername();;
-//        if (currentUser.getUser() != null) {
-//            userService.deleteByUsername(username);
-//        }
-//    }
-
 
     @GetMapping("/users")
-    public ResponseEntity<Object> getAll() {
+    public ResponseEntity<Object> getAll(@PageableDefaults(size = 20, minSize = 2, maxSize = 20) Pageable pageable) {
 
         Optional<User> user = userService.getCurrentUser();
         if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
-            return ResponseEntity.ok().body(userMapper.toAdminDTO(userService.findAll()));
+            return ResponseEntity.ok().body(userMapper.toAdminDTO(userService.findAll(pageable)));
 
         } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
-            return ResponseEntity.ok().body(userMapper.toEmployeeDTO(userService.findAll()));
+            return ResponseEntity.ok().body(userMapper.toEmployeeDTO(userService.findAll(pageable)));
 
         } else {
-            return ResponseEntity.ok().body(userMapper.toDTO(userService.findAll()));
+            return ResponseEntity.ok().body(userMapper.toDTO(userService.findAll(pageable)));
         }
     }
 
@@ -76,14 +70,19 @@ public class UserController {
     }
 
 
+
 //    @PatchMapping("/users/{username}")
 //    public UserDTO updateUser(@PathVariable String username, @RequestBody User user) {
 //
 //    }
 
-
     @DeleteMapping("/users/{username}")
     public void deleteByUsername(@PathVariable String username) {
         userService.deleteByUsername(username);
+    }
+
+    @DeleteMapping("/user")
+    public ResponseEntity<Object> deleteCurrentUser() {
+        return ResponseEntity.ok().body(userService.deleteByUsername(currentUser.getUser().getUsername()));
     }
 }

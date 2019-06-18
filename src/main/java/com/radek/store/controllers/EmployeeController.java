@@ -1,5 +1,6 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.users.EmployeeDTO;
 import com.radek.store.entity.users.Employee;
@@ -9,6 +10,7 @@ import com.radek.store.security.CurrentEmployee;
 import com.radek.store.service.EmployeeService;
 import com.radek.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +43,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public List<EmployeeDTO> getAll() {
-        return employeeMapper.toDTO(employeeService.findAll());
+    public List<EmployeeDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+        return employeeMapper.toDTO(employeeService.findAll(pageable));
     }
 
 

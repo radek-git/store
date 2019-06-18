@@ -1,5 +1,6 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.ProductDTO;
 import com.radek.store.dto.users.CustomerDTO;
@@ -13,6 +14,8 @@ import com.radek.store.service.CustomerService;
 import com.radek.store.service.OrderService;
 import com.radek.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,8 +60,8 @@ public class CustomerController {
 
 
     @GetMapping("/customers")
-    public List<CustomerDTO> getAll() {
-        return customerMapper.toDTO(customerService.findAll());
+    public List<CustomerDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+        return customerMapper.toDTO(customerService.findAll(pageable));
     }
 
 
@@ -70,9 +73,9 @@ public class CustomerController {
 
 
 //    @GetMapping("/customer/orders/{id}/products")
-////    public List<ProductDTO> getProductsByOrderIdForCurrentCustomer(@PathVariable Long id) {
-////
-////    }
+//    public List<ProductDTO> getProductsByOrderIdForCurrentCustomer(@PathVariable Long id) {
+//
+//    }
 
     @GetMapping("/customers/{username}")
     public CustomerDTO getByUsername(@PathVariable String username) {

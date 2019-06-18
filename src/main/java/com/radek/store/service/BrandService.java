@@ -3,6 +3,8 @@ package com.radek.store.service;
 import com.radek.store.entity.Brand;
 import com.radek.store.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +20,10 @@ public class BrandService {
         this.brandRepository = brandRepository;
     }
 
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+    public List<Brand> findAll(Pageable pageable) {
+        return brandRepository.findAll(pageable).getContent();
     }
 
-    public Brand findByName(String name) {
-        return brandRepository.findByName(name).orElseThrow(() -> new RuntimeException("nie ma"));
-    }
 
     public Brand save(Brand brand) {
         return brandRepository.save(brand);
@@ -34,7 +33,14 @@ public class BrandService {
         return brandRepository.save(brand);
     }
 
-    public void deleteByName(String name) {
-        brandRepository.deleteByName(name);
+
+
+    public Brand findById(Long id) {
+        return brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie ma"));
     }
+
+    public ResponseEntity<Object> deleteById(Long id) {
+        return ResponseEntity.ok().body(brandRepository.deleteBrandById(id));
+    }
+
 }

@@ -4,7 +4,10 @@ import com.radek.store.entity.users.User;
 import com.radek.store.repository.UserRepository;
 import com.radek.store.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +26,8 @@ public class UserService {
         return userRepository.findByUsername(SecurityUtils.getUsername());
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable).getContent();
     }
 
     public User findById(Long id) {
@@ -36,14 +39,6 @@ public class UserService {
     }
 
 
-    public User findByNameAndSurname(String name, String surname) {
-        return userRepository.findByNameAndSurname(name, surname).orElseThrow(() -> new RuntimeException("NIe ma"));
-    }
-
-    public User findByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new RuntimeException("NIe ma"));
-    }
-
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -53,7 +48,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void deleteByUsername(String username) {
-        userRepository.deleteByUsername(username);
+
+    public ResponseEntity<Object> deleteByUsername(String username) {
+        return ResponseEntity.ok().body(userRepository.deleteByUsername(username));
     }
 }

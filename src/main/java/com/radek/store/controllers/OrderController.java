@@ -1,18 +1,20 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.ProductDTO;
+import com.radek.store.entity.Order;
 import com.radek.store.mapper.OrderMapper;
 import com.radek.store.mapper.ProductMapper;
 import com.radek.store.security.CurrentCustomer;
 import com.radek.store.security.CurrentEmployee;
+import com.radek.store.security.SecurityUtils;
 import com.radek.store.service.OrderService;
 import com.radek.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,8 +42,8 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public List<OrderDTO> getAll () {
-        return orderMapper.toDTO(orderService.findAll());
+    public List<OrderDTO> getAll (@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+        return orderMapper.toDTO(orderService.findAll(pageable));
     }
 
 
@@ -55,6 +57,22 @@ public class OrderController {
 //    public List<ProductDTO> getProductsByOrderId(@PathVariable Long id) {
 //
 //    }
+
+    @PostMapping("/orders")
+    public OrderDTO postOrder(@RequestBody Order order) {
+        return orderMapper.toDTO(orderService.save(order));
+    }
+
+//    @PatchMapping("/orders/{id}")
+//    public OrderDTO update(@RequestBody Order order) {
+//
+//    }
+
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(orderService.deleteById(id));
+    }
+
 
 
 

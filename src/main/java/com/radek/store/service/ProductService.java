@@ -3,6 +3,8 @@ package com.radek.store.service;
 import com.radek.store.entity.Product;
 import com.radek.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,32 +21,12 @@ public class ProductService {
     }
 
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable).getContent();
     }
 
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new RuntimeException("NIe ma"));
-    }
-
-    public List<Product> findByBrand(String brand) {
-        return productRepository.findAllByBrand(brand);
-    }
-
-
-    public List<Product> findByBrandAndName(String brand, String name) {
-        return productRepository.findAllByBrandAndName(brand, name);
-    }
-
-
-    public List<Product> findByPriceGreaterThan(BigDecimal price) {
-        return productRepository.findAllByPriceIsGreaterThan(price);
-    }
-
-    public List<Product> findByCategoryAndBrandAndPriceGreaterThanAndLessThan
-            (String category, String brand, BigDecimal minPrice, BigDecimal maxPrice) {
-        return productRepository.findAllByCategoryAndBrandAndPriceGreaterThanAndPriceLessThan(category,
-                brand, minPrice, maxPrice);
     }
 
 
@@ -53,18 +35,17 @@ public class ProductService {
     }
 
 
-    public void deleteById(Long id) {
-        productRepository.deleteById(id);
+    public ResponseEntity<Object> deleteById(Long id) {
+        return ResponseEntity.ok().body(productRepository.deleteProductById(id));
     }
 
 
-    public void deleteByName(String name) {
-        productRepository.deleteByName(name);
+    public List<Product> findByBrandId(Long id, Pageable pageable) {
+        return productRepository.findAllByBrand_Id(id, pageable);
     }
 
+    public List<Product> findAllByCategory_Id(Long id, Pageable pageable) {
+        return productRepository.findAllByCategory_Id(id, pageable);
+    }
 
-//    public List<Product> findAllByOrderIdAndUsername(String username, Long id) {
-//
-//
-//    }
 }

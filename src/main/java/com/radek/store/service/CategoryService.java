@@ -3,6 +3,8 @@ package com.radek.store.service;
 import com.radek.store.entity.Category;
 import com.radek.store.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class CategoryService {
 
 
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<Category> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable).getContent();
     }
 
 
@@ -39,4 +41,9 @@ public class CategoryService {
     public void deleteByName(String name) {
         categoryRepository.deleteByName(name);
     }
+
+    public ResponseEntity<Object> deleteById(Long id) {
+        return ResponseEntity.ok().body(categoryRepository.deleteCategoryById(id));
+    }
+
 }

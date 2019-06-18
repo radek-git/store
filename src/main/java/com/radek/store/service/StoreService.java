@@ -3,6 +3,8 @@ package com.radek.store.service;
 import com.radek.store.entity.Store;
 import com.radek.store.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class StoreService {
     }
 
 
-    public List<Store> findAll() {
-        return storeRepository.findAll();
+    public List<Store> findAll(Pageable pageable) {
+        return storeRepository.findAll(pageable).getContent();
     }
 
     public Store findById(Long id) {
@@ -35,11 +37,8 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
-    public void deleteById(Long id) {
-        storeRepository.deleteById(id);
+    public ResponseEntity<Object> deleteById(Long id) {
+        return ResponseEntity.ok().body(storeRepository.deleteStoreById(id));
     }
 
-    public void deleteByName(String name) {
-        storeRepository.deleteByName(name);
-    }
 }
