@@ -3,6 +3,7 @@ package com.radek.store.service;
 import com.radek.store.entity.users.Customer;
 import com.radek.store.repository.CategoryRepository;
 import com.radek.store.repository.CustomerRepository;
+import com.radek.store.specification.CustomerSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,8 @@ public class CustomerService {
     }
 
 
-    public List<Customer> findAll(Pageable pageable) {
-        return customerRepository.findAll(pageable).getContent();
+    public List<Customer> findAll(CustomerSpecification customerSpecification, Pageable pageable) {
+        return customerRepository.findAll(customerSpecification, pageable).getContent();
     }
 
     public Customer findById(Long id) {

@@ -9,6 +9,7 @@ import com.radek.store.mapper.OrderMapper;
 import com.radek.store.security.CurrentEmployee;
 import com.radek.store.service.EmployeeService;
 import com.radek.store.service.OrderService;
+import com.radek.store.specification.EmployeeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public List<EmployeeDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
-        return employeeMapper.toDTO(employeeService.findAll(pageable));
+    public List<EmployeeDTO> getAll(EmployeeSpecification employeeSpecification, @PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+        return employeeMapper.toDTO(employeeService.findAll(employeeSpecification, pageable));
     }
 
 

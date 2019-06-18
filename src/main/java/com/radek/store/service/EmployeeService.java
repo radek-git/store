@@ -2,6 +2,7 @@ package com.radek.store.service;
 
 import com.radek.store.entity.users.Employee;
 import com.radek.store.repository.EmployeeRepository;
+import com.radek.store.specification.EmployeeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class EmployeeService {
 
 
 
-    public List<Employee> findAll(Pageable pageable) {
-        return employeeRepository.findAll(pageable).getContent();
+    public List<Employee> findAll(EmployeeSpecification employeeSpecification, Pageable pageable) {
+        return employeeRepository.findAll(employeeSpecification, pageable).getContent();
     }
 
     public List<Employee> findAllByStore_Id(Long id, Pageable pageable) {

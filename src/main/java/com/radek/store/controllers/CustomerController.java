@@ -13,6 +13,7 @@ import com.radek.store.security.CurrentCustomer;
 import com.radek.store.service.CustomerService;
 import com.radek.store.service.OrderService;
 import com.radek.store.service.ProductService;
+import com.radek.store.specification.CustomerSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,8 +61,9 @@ public class CustomerController {
 
 
     @GetMapping("/customers")
-    public List<CustomerDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
-        return customerMapper.toDTO(customerService.findAll(pageable));
+    public List<CustomerDTO> getAll(CustomerSpecification customerSpecification,
+                                    @PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+        return customerMapper.toDTO(customerService.findAll(customerSpecification, pageable));
     }
 
 
