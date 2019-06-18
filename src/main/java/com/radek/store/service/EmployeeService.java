@@ -3,6 +3,7 @@ package com.radek.store.service;
 import com.radek.store.entity.users.Employee;
 import com.radek.store.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public void deleteByUsername(String username) {
-        employeeRepository.deleteByUsername(username);
+    public ResponseEntity<Object> deleteByUsername(String username) {
+        return ResponseEntity.ok().body(employeeRepository.deleteByUsername(username));
     }
 }

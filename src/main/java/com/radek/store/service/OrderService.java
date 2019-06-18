@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderService {
 
     private OrderRepository orderRepository;
-    private ProductRepository productRepository;
+
 
 
     @Autowired
@@ -46,9 +46,7 @@ public class OrderService {
         return orderRepository.findAllByCustomer_Username(username);
     }
 
-    public List<Order> findProductsByOrderId(Long id) {
-        return productRepository.findProductByOrderId(id);
-    }
+
 
 //    public Order findAllByCustomer_UsernameAndOrderById(String username, Long id) {
 //        return orderRepository.findAllByCustomer_UsernameAndOrderById(username, id).orElseThrow(() -> new RuntimeException("Nie ma"));

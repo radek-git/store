@@ -4,6 +4,7 @@ import com.radek.store.entity.users.Customer;
 import com.radek.store.repository.CategoryRepository;
 import com.radek.store.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,4 +50,7 @@ public class CustomerService {
         return customerRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Nie ma"));
     }
 
+    public ResponseEntity<Object> deleteByUsername(String username) {
+        return ResponseEntity.ok().body(customerRepository.deleteByUsername(username));
+    }
 }

@@ -3,9 +3,11 @@ package com.radek.store.controllers;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.ProductDTO;
 import com.radek.store.mapper.OrderMapper;
+import com.radek.store.mapper.ProductMapper;
 import com.radek.store.security.CurrentCustomer;
 import com.radek.store.security.CurrentEmployee;
 import com.radek.store.service.OrderService;
+import com.radek.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,14 +24,19 @@ public class OrderController {
     private OrderMapper orderMapper;
     private CurrentCustomer currentCustomer;
     private CurrentEmployee currentEmployee;
+    private ProductService productService;
+    private ProductMapper productMapper;
 
     @Autowired
     public OrderController(OrderService orderService, OrderMapper orderMapper,
-                           CurrentCustomer currentCustomer, CurrentEmployee currentEmployee) {
+                           CurrentCustomer currentCustomer, CurrentEmployee currentEmployee,
+                           ProductService productService, ProductMapper productMapper) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
         this.currentCustomer = currentCustomer;
         this.currentEmployee = currentEmployee;
+        this.productService = productService;
+        this.productMapper = productMapper;
     }
 
     @GetMapping("/orders")
@@ -43,11 +50,11 @@ public class OrderController {
         return orderMapper.toDTO(orderService.findById(id));
     }
 
-
-    @GetMapping("/orders/{id}/products")
-    public List<ProductDTO> getProductsByOrderId(@PathVariable Long id) {
-        return orderMapper.toDTO(orderService.findProductsByOrderId(id));
-    }
+//
+//    @GetMapping("/orders/{id}/products")
+//    public List<ProductDTO> getProductsByOrderId(@PathVariable Long id) {
+//
+//    }
 
 
 

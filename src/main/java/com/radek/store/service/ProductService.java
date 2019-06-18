@@ -61,4 +61,10 @@ public class ProductService {
     public void deleteByName(String name) {
         productRepository.deleteByName(name);
     }
+
+
+//    public List<Product> findAllByOrderIdAndUsername(String username, Long id) {
+//
+//
+//    }
 }
