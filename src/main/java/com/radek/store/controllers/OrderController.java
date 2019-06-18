@@ -1,6 +1,7 @@
 package com.radek.store.controllers;
 
 import com.radek.store.dto.OrderDTO;
+import com.radek.store.dto.ProductDTO;
 import com.radek.store.mapper.OrderMapper;
 import com.radek.store.security.CurrentCustomer;
 import com.radek.store.security.CurrentEmployee;
@@ -43,39 +44,24 @@ public class OrderController {
     }
 
 
-    @GetMapping("/customers/{username}/orders")
-    public List<OrderDTO> getOrdersByUsername(@PathVariable String username) {
-        return orderMapper.toDTO(orderService.findAllByUsername(username));
+    @GetMapping("/orders/{id}/products")
+    public List<ProductDTO> getProductsByOrderId(@PathVariable Long id) {
+        return orderMapper.toDTO(orderService.findProductsByOrderId(id));
     }
 
 
-//    @GetMapping("/customers/{username}/orders/{orderId}")
-//    public OrderDTO getCustomerOrderById (@PathVariable String username, @PathVariable Long orderId) {
-//        return orderMapper.toDTO(orderService.findAllByCustomer_UsernameAndOrderById(username, orderId));
-//    }
-
-    @GetMapping("/customer/orders")
-    public List<OrderDTO> getCurrentCustomerOrders() {
-        return orderMapper.toDTO(orderService.findAllByUsername(currentCustomer.getCustomer().getUsername()));
-    }
 
 
-//    @GetMapping("/customer/orders/{orderId}")
-//    public OrderDTO getCurrentCustomerOrdersById (@PathVariable Long orderId) {
-//        return orderMapper.toDTO(orderService.findAllByCustomer_UsernameAndOrderById(
-//                currentCustomer.getCustomer().getUsername(), orderId));
-//    }
 
 
-    @GetMapping("/employee/orders")
-    public List<OrderDTO> getCurrentEmployeeOrders() {
-        return orderMapper.toDTO(orderService.findAllByUsername(currentEmployee.getEmployee().getUsername()));
-    }
 
-    @GetMapping("/employees/{username}/orders)")
-    public List<OrderDTO> getEmployeeOrders(@PathVariable String username) {
-        return orderMapper.toDTO(orderService.findAllByUsername(username));
-    }
+
+
+
+
+
+
+
 
 
 }

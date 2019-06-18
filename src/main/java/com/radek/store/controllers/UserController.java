@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -48,8 +48,18 @@ public class UserController {
 
 
     @GetMapping("/users")
-    public List<UserDTO> getAll() {
-        return userMapper.toDTO(userService.findAll());
+    public ResponseEntity<Object> getAll() {
+
+        Optional<User> user = userService.getCurrentUser();
+        if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok().body(userMapper.toAdminDTO(userService.findAll()));
+
+        } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
+            return ResponseEntity.ok().body(userMapper.toEmployeeDTO(userService.findAll()));
+
+        } else {
+            return ResponseEntity.ok().body(userMapper.toDTO(userService.findAll()));
+        }
     }
 
 

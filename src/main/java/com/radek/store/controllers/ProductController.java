@@ -29,15 +29,13 @@ public class ProductController {
         return productMapper.toDTO(productService.findAll());
     }
 
-    @GetMapping("/products/{brand}")
-    public List<ProductDTO> getByName(@PathVariable String brand) {
-        return productMapper.toDTO(productService.findByBrand(brand));
-    }
 
-    @GetMapping("/products/{brand}/{name}")
-    public List<ProductDTO> getProductByBrandAndName(@PathVariable String brand, @PathVariable String name) {
-        return productMapper.toDTO(productService.findByBrandAndName(brand, name));
-    }
+
+
+
+//    @GetMapping("/products/{id}")
+
+
 
     @PostMapping("/products")
     public ProductDTO postProduct(@RequestBody Product product) {

@@ -2,10 +2,12 @@ package com.radek.store.service;
 
 import com.radek.store.entity.users.User;
 import com.radek.store.repository.UserRepository;
+import com.radek.store.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,6 +19,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public Optional<User> getCurrentUser() {
+        return userRepository.findByUsername(SecurityUtils.getUsername());
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();

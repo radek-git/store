@@ -29,23 +29,19 @@ public class CategoryController {
         return categoryMapper.toDTO(categoryService.findAll());
     }
 
-    @GetMapping("/categories/{name}")
-    public CategoryDTO getByName(@PathVariable String name) {
-        return categoryMapper.toDTO(categoryService.findByName(name));
-    }
+//    @GetMapping("/categories/{id}")
+
+
+    //    @GetMapping("/category/{id}/products")
 
     @PostMapping("/categories")
     public CategoryDTO postCategory(@RequestBody Category category) {
         return categoryMapper.toDTO(categoryService.save(category));
     }
 
-//    @PatchMapping("/categories/{name}")
-//    public CategoryDTO updateCategory(@PathVariable String name, @RequestBody Category category) {
-//
-//    }
+//    @PatchMapping("/categories/{id}")
 
-//    @DeleteMapping("/categories/{name}")
-//    public ResponseEntity<Object> deleteByName(@PathVariable String name) {
-//
-//    }
+
+//    @DeleteMapping("/categories/{id}")
+
 }

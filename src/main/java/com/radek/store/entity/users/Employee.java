@@ -1,16 +1,20 @@
 package com.radek.store.entity.users;
 
+import com.radek.store.entity.Order;
 import com.radek.store.entity.Position;
 import com.radek.store.entity.Store;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "employees")
 @Entity(name = "Employee")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Employee extends User{
 
@@ -37,4 +41,8 @@ public class Employee extends User{
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "added_by_employee_id")
     private Employee addedBy;
+
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Order> orders = new ArrayList<>();
 }

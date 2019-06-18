@@ -10,17 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EmployeeDTO extends UserDTO {
 
-
-    @Builder
-    public EmployeeDTO(String name,  String surname, String username,
-                       String email, String phoneNumber,
-                       String street, String city, String postalCode) {
-        super(name, surname, username, email, phoneNumber);
-        this.storeId = storeId;
-        this.positionId = positionId;
-
-    }
-
     private Long storeId;
     private Long positionId;
 

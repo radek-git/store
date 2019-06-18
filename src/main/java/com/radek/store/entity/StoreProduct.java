@@ -1,16 +1,15 @@
 package com.radek.store.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table(name = "stocks")
-@Data
+@Table(name = "store_products")
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

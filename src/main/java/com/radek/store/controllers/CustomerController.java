@@ -1,5 +1,7 @@
 package com.radek.store.controllers;
 
+import com.radek.store.dto.OrderDTO;
+import com.radek.store.dto.ProductDTO;
 import com.radek.store.dto.users.CustomerDTO;
 import com.radek.store.entity.users.Customer;
 import com.radek.store.mapper.CustomerMapper;
@@ -50,6 +52,20 @@ public class CustomerController {
     }
 
 
+//    @GetMapping("/customer/orders")
+//    public List<OrderDTO> getCurrentCustomerOrders() {
+//        return orderMapper.toDTO(orderService.findAllByUsername(currentCustomer.getCustomer().getUsername()));
+//    }
+
+//    @GetMapping("/customers/{username}/orders")
+//    public List<OrderDTO> getOrdersByUsername(@PathVariable String username) {
+//        return orderMapper.toDTO(orderService.findAllByUsername(username));
+//    }
+
+//    @GetMapping("/customer/orders/{id}/products")
+//    public List<ProductDTO> getProductsByOrderIdForCurrentCustomer(@PathVariable Long id) {
+//
+//    }
 
 
 

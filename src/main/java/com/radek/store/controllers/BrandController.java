@@ -1,6 +1,7 @@
 package com.radek.store.controllers;
 
 import com.radek.store.dto.BrandDTO;
+import com.radek.store.dto.ProductDTO;
 import com.radek.store.entity.Brand;
 import com.radek.store.mapper.BrandMapper;
 import com.radek.store.service.BrandService;
@@ -29,23 +30,31 @@ public class BrandController {
         return brandMapper.toDTO(brandService.findAll());
     }
 
-    @GetMapping("/brands/{name}")
-    public BrandDTO getByName(@PathVariable String name) {
-        return brandMapper.toDTO(brandService.findByName(name));
-    }
+//    @GetMapping("/brands/{id}")
+//    public BrandDTO getByName(@PathVariable Long id) {
+//        return brandMapper.toDTO(brandService.findById(id));
+//    }
+
+    //    @GetMapping("/brand/{id}/products")
+//    public
 
     @PostMapping("/brands")
     public BrandDTO postBrand(@RequestBody Brand brand) {
         return brandMapper.toDTO(brandService.save(brand));
     }
 
-//    @PatchMapping("/brands/{name}")
-//    public BrandDTO updateBrand(@PathVariable String name, @RequestBody Brand brand) {
+
+//    @GetMapping("/brands/{id}/products")
+
+
+
+//    @PatchMapping("/brands/{id}")
+//    public BrandDTO updateBrand(@PathVariable Long id, @RequestBody Brand brand) {
 //
 //    }
 
-//    @DeleteMapping("/brands/{name}")
-//    public ResponseEntity<Object> deleteByName(@PathVariable String name) {
+//    @DeleteMapping("/brands/{id}")
+//    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
 //        return brandMapper.toDTO(brandService.deleteByName(name));
 //    }
 }

@@ -1,5 +1,6 @@
 package com.radek.store.controllers;
 
+import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.users.EmployeeDTO;
 import com.radek.store.entity.users.Employee;
 import com.radek.store.mapper.EmployeeMapper;
@@ -55,6 +56,18 @@ public class EmployeeController {
     public EmployeeDTO getByUsername(@PathVariable String username) {
         return employeeMapper.toDTO(employeeService.findByUsername(username));
     }
+
+//    @GetMapping("/employee/orders")
+//    public List<OrderDTO> getCurrentEmployeeOrders() {
+//        return orderMapper.toDTO(orderService.findAllByUsername(currentEmployee.getEmployee().getUsername()));
+//    }
+//
+//    @GetMapping("/employees/{username}/orders)")
+//    public List<OrderDTO> getEmployeeOrders(@PathVariable String username) {
+//        return orderMapper.toDTO(orderService.findAllByUsername(username));
+//    }
+
+
 
     @PostMapping("/employees")
     public EmployeeDTO postEmployee(@RequestBody Employee employee) {

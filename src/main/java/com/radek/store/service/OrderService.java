@@ -2,6 +2,7 @@ package com.radek.store.service;
 
 import com.radek.store.entity.Order;
 import com.radek.store.repository.OrderRepository;
+import com.radek.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class OrderService {
 
     private OrderRepository orderRepository;
+    private ProductRepository productRepository;
 
 
     @Autowired
@@ -42,6 +44,10 @@ public class OrderService {
 
     public List<Order> findAllByUsername(String username) {
         return orderRepository.findAllByCustomer_Username(username);
+    }
+
+    public List<Order> findProductsByOrderId(Long id) {
+        return productRepository.findProductByOrderId(id);
     }
 
 //    public Order findAllByCustomer_UsernameAndOrderById(String username, Long id) {
