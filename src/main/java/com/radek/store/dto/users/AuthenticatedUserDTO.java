@@ -1,13 +1,17 @@
 package com.radek.store.dto.users;
 
 import com.radek.store.dto.AbstractDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeUserDTO  {
+@AllArgsConstructor
+public class AuthenticatedUserDTO  {
 
     private Long id;
     private String name;
@@ -15,4 +19,7 @@ public class EmployeeUserDTO  {
     private String username;
     private String email;
     private String phoneNumber;
+
+
+
 }

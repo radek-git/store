@@ -12,7 +12,8 @@ import java.util.List;
 @Table(name = "customers")
 @Entity(name = "Customer")
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 
 public class Customer extends User{

@@ -1,4 +1,4 @@
-insert into orders (customer_id, employee_id, store_id, total_price) values (36, 14, 7, 4533.2);
+insert into orders (customer_id, employee_id, store_id, total_price) values (36, 1, 7, 4533.2);
 insert into orders (customer_id, employee_id, store_id, total_price) values (32, 2, 9, 4849.07);
 insert into orders (customer_id, employee_id, store_id, total_price) values (37, 13, 6, 798.47);
 insert into orders (customer_id, employee_id, store_id, total_price) values (32, 17, 7, 1754.54);
@@ -17,4 +17,4 @@ insert into orders (customer_id, employee_id, store_id, total_price) values (32,
 insert into orders (customer_id, employee_id, store_id, total_price) values (32, 5, 10, 976.78);
 insert into orders (customer_id, employee_id, store_id, total_price) values (33, 14, 3, 4618.21);
 insert into orders (customer_id, employee_id, store_id, total_price) values (35, 9, 4, 2174.59);
-insert into orders (customer_id, employee_id, store_id, total_price) values (30, 18, 1, 2211.28);
+insert into orders (customer_id, employee_id, store_id, total_price) values (21, 1, 1, 2211.28);

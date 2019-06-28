@@ -1,16 +1,15 @@
 package com.radek.store.entity;
 
 import com.radek.store.entity.users.Employee;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 
 @Table(name = "products")
-@Data
+@Setter
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

@@ -17,7 +17,8 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor

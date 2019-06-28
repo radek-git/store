@@ -3,9 +3,7 @@ package com.radek.store.entity;
 
 import com.radek.store.entity.users.Customer;
 import com.radek.store.entity.users.Employee;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,7 +12,8 @@ import java.util.List;
 
 @Table(name = "orders")
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order extends AbstractEntity{

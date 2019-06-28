@@ -1,11 +1,10 @@
 package com.radek.store.dto.users;
 
 import com.radek.store.dto.AbstractDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminUserDTO extends AbstractDTO {

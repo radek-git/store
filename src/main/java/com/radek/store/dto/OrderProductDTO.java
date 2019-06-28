@@ -1,19 +1,19 @@
 package com.radek.store.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderedProductDTO extends AbstractDTO{
+public class OrderProductDTO {
 
     private Long orderId;
     private Long productId;
     private BigDecimal quantity;
     private BigDecimal price;
     private int position;
+
 }

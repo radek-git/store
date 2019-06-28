@@ -1,9 +1,7 @@
 package com.radek.store.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +9,8 @@ import java.math.BigDecimal;
 
 @Table(name = "order_products")
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderProduct implements Serializable {
