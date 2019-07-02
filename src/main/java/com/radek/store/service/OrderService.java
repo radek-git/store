@@ -1,11 +1,10 @@
 package com.radek.store.service;
 
 import com.radek.store.entity.Order;
+import com.radek.store.exception.OrderNotFoundException;
 import com.radek.store.repository.OrderRepository;
-import com.radek.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,9 +38,9 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public ResponseEntity<Object> deleteById(Long id) {
-        return ResponseEntity.ok().body(orderRepository.deleteOrderById(id));
-    }
+//    public ResponseEntity<Object> deleteById(Long id) {
+//        return ResponseEntity.ok().body(orderRepository.deleteOrderById(id));
+//    }
 
 
     public List<Order> findAllByUsername(String username) {
@@ -52,12 +51,14 @@ public class OrderService {
         return orderRepository.findOrdersByStore_Id(id, pageable);
     }
 
+    public Order findByEmployeeUsernameAndOrderId(String username, Long id) {
+        return orderRepository.findByEmployee_UsernameAndId(username, id).orElseThrow(OrderNotFoundException::new);
+    }
 
+    public Order findByCustomerUsernameAndOrderId(String username, Long id) {
+        return orderRepository.findByCustomerUsernameAndId(username, id).orElseThrow(OrderNotFoundException::new);
+    }
 
-
-//    public Order findAllByCustomer_UsernameAndOrderById(String username, Long id) {
-//        return orderRepository.findAllByCustomer_UsernameAndOrderById(username, id).orElseThrow(() -> new RuntimeException("Nie ma"));
-//    }
 
 
 }

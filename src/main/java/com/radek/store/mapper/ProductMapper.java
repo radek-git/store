@@ -1,6 +1,7 @@
 package com.radek.store.mapper;
 
-import com.radek.store.dto.ProductDTO;
+import com.radek.store.dto.products.EmployeeProductDTO;
+import com.radek.store.dto.products.ProductDTO;
 import com.radek.store.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,6 +24,17 @@ public interface ProductMapper {
     Product toEntity(ProductDTO productDTO);
 
     List<Product> toEntity(List<ProductDTO> productDTOS);
+
+
+    @Mappings({
+            @Mapping(target = "categoryId", source = "category.id"),
+            @Mapping(target = "brandId", source = "brand.id"),
+            @Mapping(target = "addedByEmployeeId", source = "addedBy.id"),
+            @Mapping(target = "updatedByEmployeeId", source = "updatedByEmp.id")
+    })
+    EmployeeProductDTO toEmployeeProductDTO(Product product);
+
+    List<EmployeeProductDTO> toEmployeeProductDTO(List<Product> products);
 
 
 }

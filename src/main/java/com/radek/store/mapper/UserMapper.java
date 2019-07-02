@@ -1,11 +1,11 @@
 package com.radek.store.mapper;
 
 import com.radek.store.dto.users.AdminUserDTO;
+import com.radek.store.dto.users.AuthenticatedUserDTO;
 import com.radek.store.dto.users.EmployeeUserDTO;
 import com.radek.store.dto.users.UserDTO;
 import com.radek.store.entity.users.User;
 import org.mapstruct.Mapper;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -23,4 +23,8 @@ public interface UserMapper {
     EmployeeUserDTO toEmployeeDTO(User user);
 
     List<EmployeeUserDTO> toEmployeeDTO(List<User> users);
+
+    AuthenticatedUserDTO toAuthenticatedUserDTO(User user);
+
+
 }

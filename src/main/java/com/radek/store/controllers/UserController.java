@@ -1,6 +1,10 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.IsAdmin;
+import com.radek.store.annotation.IsAuthenticated;
+import com.radek.store.annotation.IsEmployeeOrCurrentUser;
 import com.radek.store.annotation.PageableDefaults;
+import com.radek.store.dto.users.AuthenticatedUserDTO;
 import com.radek.store.dto.users.UserDTO;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.UserMapper;
@@ -9,8 +13,10 @@ import com.radek.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,16 +35,11 @@ public class UserController {
         this.currentUser = currentUser;
     }
 
+    @IsAuthenticated
     @GetMapping("/user")
-    public UserDTO getCurrentUser() {
-        return userMapper.toDTO(currentUser.getUser());
+    public AuthenticatedUserDTO getCurrentUser() {
+        return userMapper.toAuthenticatedUserDTO(currentUser.getUser());
     }
-
-
-//    @PatchMapping("/user")
-//    public UserDTO updateCurrentUser(@RequestBody User user) {
-//
-//    }
 
 
     @GetMapping("/users")
@@ -59,10 +60,18 @@ public class UserController {
 
 
     @GetMapping("/users/{username}")
-    public UserDTO getByUsername(@PathVariable String username) {
-        return userMapper.toDTO(userService.findByUsername(username));
-    }
+    public ResponseEntity<Object> getByUsername(@PathVariable String username) {
+        Optional<User> user = userService.getCurrentUser();
+        if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok().body(userMapper.toAdminDTO(userService.findByUsername(username)));
 
+        } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
+            return ResponseEntity.ok().body(userMapper.toEmployeeDTO(userService.findByUsername(username)));
+
+        } else {
+            return ResponseEntity.ok().body(userMapper.toDTO(userService.findByUsername(username)));
+        }
+    }
 
     @PostMapping("/users")
     public UserDTO postUser(@RequestBody User user) {
@@ -76,11 +85,16 @@ public class UserController {
 //
 //    }
 
+//    @IsAuthenticated
+//    @PatchMapping("/user")
+
+    @IsEmployeeOrCurrentUser
     @DeleteMapping("/users/{username}")
     public void deleteByUsername(@PathVariable String username) {
         userService.deleteByUsername(username);
     }
 
+    @IsAdmin
     @DeleteMapping("/user")
     public ResponseEntity<Object> deleteCurrentUser() {
         return ResponseEntity.ok().body(userService.deleteByUsername(currentUser.getUser().getUsername()));
