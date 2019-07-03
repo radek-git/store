@@ -1,10 +1,10 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.BrandDTO;
 import com.radek.store.dto.ProductDTO;
 import com.radek.store.entity.Brand;
-import com.radek.store.entity.Product;
 import com.radek.store.mapper.BrandMapper;
 import com.radek.store.mapper.ProductMapper;
 import com.radek.store.service.BrandService;
@@ -49,23 +49,27 @@ public class BrandController {
     }
 
 
-
+    @IsEmployee
     @PostMapping("/brands")
-    public BrandDTO postBrand(@RequestBody Brand brand) {
-        return brandMapper.toDTO(brandService.save(brand));
+    public BrandDTO postBrand(@RequestBody BrandDTO brandDTO) {
+        return brandMapper.toDTO(brandService.save(brandMapper.toEntity(brandDTO)));
     }
 
 
+//    @IsEmployee
 //    @PatchMapping("/brands/{id}")
 //    public BrandDTO updateBrand(@PathVariable Long id, @RequestBody Brand brand) {
 //
 //    }
 
 
+    @IsEmployee
     @DeleteMapping("/brands/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable Long id) {
-        return ResponseEntity.ok().body((brandService.deleteById(id)));
+        brandService.deleteById(id);
+        return ResponseEntity.ok().body(null);
     }
+
 
 
 }

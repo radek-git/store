@@ -1,5 +1,6 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.CategoryDTO;
 import com.radek.store.dto.ProductDTO;
@@ -49,17 +50,20 @@ public class CategoryController {
         return productMapper.toDTO(productService.findAllByCategory_Id(id, pageable));
     }
 
+    @IsEmployee
     @PostMapping("/categories")
     public CategoryDTO postCategory(@RequestBody Category category) {
         return categoryMapper.toDTO(categoryService.save(category));
     }
 
+//    @IsEmployee
 //    @PatchMapping("/categories/{id}")
 //    public CategoryDTO update(@RequestBody Category category) {
 //
 //    }
 
 
+    @IsEmployee
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok().body(categoryService.deleteById(id));
