@@ -1,5 +1,6 @@
-package com.radek.store.dto;
+package com.radek.store.dto.products;
 
+import com.radek.store.dto.AbstractDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -8,8 +9,9 @@ import java.math.BigDecimal;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO extends AbstractDTO {
+public class ProductDTO  {
 
+    private Long id;
     private String name;
     private BigDecimal price;
 

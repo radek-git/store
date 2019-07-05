@@ -2,8 +2,9 @@ package com.radek.store.controllers;
 
 import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
-import com.radek.store.dto.ProductDTO;
+import com.radek.store.dto.products.ProductDTO;
 import com.radek.store.entity.Product;
+import com.radek.store.entity.users.User;
 import com.radek.store.mapper.EmployeeMapper;
 import com.radek.store.mapper.ProductMapper;
 import com.radek.store.service.ProductService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -35,23 +37,44 @@ public class ProductController {
     }
 
 
-    @GetMapping("/products")
-    public List<ProductDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
-        return productMapper.toDTO(productService.findAll(pageable));
+//    @GetMapping("/products")
+//    public List<ProductDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+//        return productMapper.toDTO(productService.findAll(pageable));
+//    }
+
+    @GetMapping("/products")// - nie działa
+    public ResponseEntity<Object> getAll(@PageableDefaults(size = 20, maxSize = 20, minSize = 2) Pageable pageable) {
+        Optional<User> user = userService.getCurrentUser();
+
+        if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok().body(productMapper.toAdminProductDTO(productService.findAll(pageable)));
+        } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
+            return ResponseEntity.ok().body(productMapper.toEmployeeProductDTO(productService.findAll(pageable)));
+        } else {
+            return ResponseEntity.ok().body(productMapper.toDTO(productService.findAll(pageable)));
+        }
+
     }
 
 
-    @GetMapping("/products/{id}")
-    public ProductDTO getById(@PathVariable Long id) {
-//        Optional<User> optionalUser = userService.getCurrentUser();
 //
-//        if (optionalUser.isPresent() && optionalUser.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
-//            return ResponseEntity.ok().body(productMapper.toEmployeeProductDTO(productService.findById(id)));
-//        } else {
-//            return ResponseEntity.ok().body(productMapper.toDTO(productService.findById(id)));
-//        }
+//    @GetMapping("/products/{id}")
+//    public ProductDTO getById(@PathVariable Long id) {
+//        return productMapper.toDTO(productService.findById(id));
+//    }
 
-        return productMapper.toDTO(productService.findById(id));
+
+    @GetMapping("/products/{id}") //- nie działa
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
+        Optional<User> user = userService.getCurrentUser();
+
+        if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok().body(productMapper.toAdminProductDTO(productService.findById(id)));
+        } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
+            return ResponseEntity.ok().body(productMapper.toEmployeeProductDTO(productService.findById(id)));
+        } else {
+            return ResponseEntity.ok().body(productMapper.toDTO(productService.findById(id)));
+        }
     }
 
     @IsEmployee

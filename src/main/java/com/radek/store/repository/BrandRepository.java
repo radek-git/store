@@ -12,7 +12,7 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     Optional<Brand> findByName(String name);
 
-    ResponseEntity<Object> deleteBrandById(Long id);
+    long deleteBrandById(Long id);
 
 
 }

@@ -5,21 +5,20 @@ import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.OrderProductDTO;
-import com.radek.store.dto.StoreDTO;
+import com.radek.store.dto.stores.StoreDTO;
 import com.radek.store.dto.StoreProductDTO;
 import com.radek.store.dto.employees.EmployeeDTO;
 import com.radek.store.entity.Store;
+import com.radek.store.entity.users.User;
 import com.radek.store.mapper.*;
-import com.radek.store.service.EmployeeService;
-import com.radek.store.service.OrderService;
-import com.radek.store.service.ProductService;
-import com.radek.store.service.StoreService;
+import com.radek.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -35,13 +34,15 @@ public class StoreController {
     private ProductMapper productMapper;
     private StoreProductMapper storeProductMapper;
     private OrderProductMapper orderProductMapper;
+    private UserService userService;
 
     @Autowired
     public StoreController(StoreService storeService, StoreMapper storeMapper,
                            EmployeeService employeeService, EmployeeMapper employeeMapper,
                            OrderService orderService, OrderMapper orderMapper,
                            ProductService productService, ProductMapper productMapper,
-                           StoreProductMapper storeProductMapper, OrderProductMapper orderProductMapper) {
+                           StoreProductMapper storeProductMapper, OrderProductMapper orderProductMapper,
+                           UserService userService) {
         this.storeService = storeService;
         this.storeMapper = storeMapper;
         this.employeeService = employeeService;
@@ -52,18 +53,47 @@ public class StoreController {
         this.productMapper = productMapper;
         this.storeProductMapper = storeProductMapper;
         this.orderProductMapper = orderProductMapper;
+        this.userService = userService;
     }
+
 
 
     @GetMapping("/stores")
-    public List<StoreDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
-        return storeMapper.toDTO(storeService.findAll(pageable));
+    public ResponseEntity<Object> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+        Optional<User> user = userService.getCurrentUser();
+
+        if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok().body(storeMapper.toAdminStoreDTO(storeService.findAll(pageable)));
+        } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
+            return ResponseEntity.ok().body(storeMapper.toEmployeeStoreDTO(storeService.findAll(pageable)));
+        } else {
+            return ResponseEntity.ok().body(storeMapper.toDTO(storeService.findAll(pageable)));
+        }
+
     }
 
+
+//    @GetMapping("/stores/{id}")
+//    public StoreDTO getById(@PathVariable Long id) {
+//        return storeMapper.toDTO(storeService.findById(id));
+//    }
+
+
     @GetMapping("/stores/{id}")
-    public StoreDTO getById(@PathVariable Long id) {
-        return storeMapper.toDTO(storeService.findById(id));
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
+        Optional<User> user = userService.getCurrentUser();
+
+        if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok().body(storeMapper.toAdminStoreDTO(storeService.findById(id)));
+        } else if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"))) {
+            return ResponseEntity.ok().body(storeMapper.toEmployeeStoreDTO(storeService.findById(id)));
+        } else {
+            return ResponseEntity.ok().body(storeMapper.toDTO(storeService.findById(id)));
+        }
     }
+
+
+
 
     @GetMapping("/stores/{id}/products")
     public List<StoreProductDTO> getStoreProductsById(@PathVariable Long id) {

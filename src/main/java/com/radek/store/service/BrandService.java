@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -39,8 +40,9 @@ public class BrandService {
         return brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie ma"));
     }
 
-    public ResponseEntity<Object> deleteById(Long id) {
-        return ResponseEntity.ok().body(brandRepository.deleteBrandById(id));
+    @Transactional
+    public void deleteById(Long id) {
+        brandRepository.deleteById(id);
     }
 
 }

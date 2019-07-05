@@ -30,6 +30,11 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("NIe ma"));
     }
 
+
+    public Order findByOrderIdAndStoreId(Long orderId, Long id) {
+        return orderRepository.findByIdAndStore_Id(orderId, id).orElseThrow(OrderNotFoundException::new);
+    }
+
     public List<Order> findByCustomerId(Long customer_id) {
         return orderRepository.findAllByCustomer_Id(customer_id);
     }
