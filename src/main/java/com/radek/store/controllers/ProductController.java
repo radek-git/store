@@ -29,7 +29,7 @@ public class ProductController {
 
     @Autowired
     public ProductController(ProductService productService, ProductMapper productMapper,
-                             EmployeeMapper employeeMapper) {
+                             UserService userService) {
         this.productService = productService;
         this.productMapper = productMapper;
         this.userService = userService;
@@ -37,12 +37,9 @@ public class ProductController {
     }
 
 
-//    @GetMapping("/products")
-//    public List<ProductDTO> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
-//        return productMapper.toDTO(productService.findAll(pageable));
-//    }
 
-    @GetMapping("/products")// - nie działa
+
+    @GetMapping("/products")
     public ResponseEntity<Object> getAll(@PageableDefaults(size = 20, maxSize = 20, minSize = 2) Pageable pageable) {
         Optional<User> user = userService.getCurrentUser();
 
@@ -57,14 +54,8 @@ public class ProductController {
     }
 
 
-//
-//    @GetMapping("/products/{id}")
-//    public ProductDTO getById(@PathVariable Long id) {
-//        return productMapper.toDTO(productService.findById(id));
-//    }
 
-
-    @GetMapping("/products/{id}") //- nie działa
+    @GetMapping("/products/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id) {
         Optional<User> user = userService.getCurrentUser();
 
