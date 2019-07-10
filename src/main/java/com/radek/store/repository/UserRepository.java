@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByPhoneNumber(String phoneNumber);
 
-    ResponseEntity<Object> deleteByUsername(String username);
+    long deleteByUsername(String username);
 }

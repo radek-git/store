@@ -15,7 +15,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 
     Optional<Employee> findByUsername(String username);
 
-    ResponseEntity<Object> deleteByUsername(String username);
+    long deleteByUsername(String username);
 
     List<Employee> findAllByStore_Id(Long id, Pageable pageable);
 }

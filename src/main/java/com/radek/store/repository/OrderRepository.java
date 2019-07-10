@@ -18,7 +18,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findOrdersByStore_Id(Long id, Pageable pageable);
 
-    //ResponseEntity<Object> deleteOrderById(Long id);
+    long deleteOrderById(Long id);
 
     Optional<Order> findByEmployee_UsernameAndId(String username, Long id);
 

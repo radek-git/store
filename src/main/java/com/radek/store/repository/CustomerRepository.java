@@ -14,5 +14,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
     Optional<Customer> findByUsername(String username);
 
-    ResponseEntity<Object> deleteByUsername(String username);
+    long deleteByUsername(String username);
 }

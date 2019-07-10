@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByName(String name);
 
-    ResponseEntity<Object> deleteStoreById(Long id);
+    long deleteStoreById(Long id);
 
 }

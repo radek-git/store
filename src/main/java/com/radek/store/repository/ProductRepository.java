@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategory_Id(Long id, Pageable pageable);
 
-    ResponseEntity<Object> deleteProductById(Long id);
+    long deleteProductById(Long id);
 
 
 
