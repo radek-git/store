@@ -5,18 +5,17 @@ import com.radek.store.annotation.*;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.customers.AuthenticatedCustomerDTO;
 import com.radek.store.dto.customers.CustomerDTO;
+import com.radek.store.dto.customers.PatchCustomerDTO;
 import com.radek.store.entity.Order;
 import com.radek.store.entity.users.Customer;
+import com.radek.store.entity.users.Employee;
 import com.radek.store.entity.users.User;
 import com.radek.store.exception.OrderNotFoundException;
 import com.radek.store.mapper.CustomerMapper;
 import com.radek.store.mapper.OrderMapper;
 import com.radek.store.mapper.OrderProductMapper;
 import com.radek.store.mapper.ProductMapper;
-import com.radek.store.service.CustomerService;
-import com.radek.store.service.OrderService;
-import com.radek.store.service.ProductService;
-import com.radek.store.service.UserService;
+import com.radek.store.service.*;
 import com.radek.store.specification.CustomerSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -41,9 +40,13 @@ public class CustomerController {
     private OrderProductMapper orderProductMapper;
 
 
+
     @Autowired
     public CustomerController(UserService userService, CustomerService customerService,
-                              CustomerMapper customerMapper, ProductService productService, ProductMapper productMapper, OrderService orderService, OrderMapper orderMapper, OrderProductMapper orderProductMapper) {
+                              CustomerMapper customerMapper, ProductService productService,
+                              ProductMapper productMapper, OrderService orderService,
+                              OrderMapper orderMapper, OrderProductMapper orderProductMapper
+                              ) {
         this.userService = userService;
         this.customerService = customerService;
         this.customerMapper = customerMapper;
@@ -52,6 +55,7 @@ public class CustomerController {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
         this.orderProductMapper = orderProductMapper;
+
     }
 
     @IsCustomer
@@ -110,7 +114,7 @@ public class CustomerController {
         return orderMapper.toDTO(orderService.findAllByUsername(username));
     }
 
-    //admin będzie miał role: admin, employee
+
 
     @IsEmployeeOrCurrentUser
     @GetMapping("/customers/{username}/orders/{id}")
@@ -143,19 +147,68 @@ public class CustomerController {
 
     }
 
-//    @IsEmployeeOrCurrentUser
-    //    @PatchMapping("/customers/{username}")
-//    public CustomerDTO updateCustomer(@PathVariable String username, @RequestBody Customer customer) {
-//
-//    }
+
+    @IsEmployeeOrCurrentUser
+    @PatchMapping("/customers/{username}")
+    public CustomerDTO updateCustomer(@PathVariable String username, @RequestBody PatchCustomerDTO patchCustomerDTO) {
+        Customer customer = customerService.findByUsername(username);
+
+        Optional<User> user = userService.getCurrentUser();
+
+        if (patchCustomerDTO.getName() != null) {
+            customer.setName(patchCustomerDTO.getName());
+        }
+        if (patchCustomerDTO.getSurname() != null) {
+            customer.setUsername(patchCustomerDTO.getSurname());
+        }
+        if (patchCustomerDTO.getUsername() != null) {
+            customer.setUsername(patchCustomerDTO.getUsername());
+        }
+        if (patchCustomerDTO.getEmail() != null) {
+            customer.setEmail(patchCustomerDTO.getEmail());
+        }
+        if (patchCustomerDTO.getPhoneNumber() != null) {
+            customer.setPhoneNumber(patchCustomerDTO.getPhoneNumber());
+        }
+        if (patchCustomerDTO.getStreet() != null) {
+            customer.setStreet(patchCustomerDTO.getStreet());
+        }
+        if (patchCustomerDTO.getCity() != null) {
+            customer.setCity(patchCustomerDTO.getCity());
+        }
+        if (patchCustomerDTO.getPostalCode() != null) {
+            customer.setPostalCode(patchCustomerDTO.getPostalCode());
+        }
+
+
+        if (user.isPresent() && user.get() instanceof Employee) {
+           //metody dla admina/employee
+            if (patchCustomerDTO.getExpired() != null) {
+                customer.setExpired(patchCustomerDTO.getExpired());
+            }
+            if (patchCustomerDTO.getLocked() != null) {
+                customer.setLocked(patchCustomerDTO.getLocked());
+            }
+            if (patchCustomerDTO.getCredentialsExpired() != null) {
+                customer.setCredentialsExpired(patchCustomerDTO.getCredentialsExpired());
+            }
+            if (patchCustomerDTO.getEnabled() != null) {
+                customer.setCredentialsExpired(patchCustomerDTO.getEnabled());
+            }
+        }
+
+        return customerMapper.toDTO(customerService.save(customer));
+    }
 
 
 
-//    @IsCustomer
-//    @DeleteMapping("/customer")
-//    public ResponseEntity<Object> deleteCurrentCustomer() {
-//        return ResponseEntity.ok().body(customerService.deleteByUsername(currentCustomer.getCustomer().getUsername()));
-//    }
+    @IsCustomer
+    @DeleteMapping("/customer")
+    public ResponseEntity<Object> deleteCurrentCustomer() {
+        customerService.deleteByUsername(((Customer) userService.getCurrentUser().get()).getUsername());
+
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK.value(), "DELETED"));
+    }
 
 
 //    @IsCustomer
