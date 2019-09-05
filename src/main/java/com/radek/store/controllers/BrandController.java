@@ -3,7 +3,10 @@ package com.radek.store.controllers;
 import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.brands.BrandDTO;
+import com.radek.store.dto.brands.PatchBrandDTO;
 import com.radek.store.dto.products.ProductDTO;
+import com.radek.store.entity.Brand;
+import com.radek.store.entity.users.Employee;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.BrandMapper;
 import com.radek.store.mapper.ProductMapper;
@@ -40,7 +43,7 @@ public class BrandController {
 
 
     @GetMapping("/brands")
-    public ResponseEntity<Object> getAll(@PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
+    public ResponseEntity<Object> getAll(@PageableDefaults(size = 50, minSize = 50, maxSize = 50) Pageable pageable) {
         Optional<User> user = userService.getCurrentUser();
 
         if (user.isPresent() && user.get().getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
@@ -51,11 +54,6 @@ public class BrandController {
             return ResponseEntity.ok().body(brandMapper.toDTO(brandService.findAll(pageable)));
         }
     }
-
-//    @GetMapping("/brands/{id}") - zmieniona
-//    public BrandDTO getById(@PathVariable Long id) {
-//        return brandMapper.toDTO(brandService.findById(id));
-//    }
 
 
     @GetMapping("/brands/{id}")
@@ -72,6 +70,8 @@ public class BrandController {
     }
 
 
+
+
     @GetMapping("/brands/{id}/products")
     public List<ProductDTO> getProductsByBrandId(@PathVariable Long id, @PageableDefaults(size = 20, minSize = 20, maxSize = 50) Pageable pageable) {
         return productMapper.toDTO(productService.findByBrandId(id, pageable));
@@ -85,17 +85,24 @@ public class BrandController {
     }
 
 
-//    @IsEmployee
-//    @PatchMapping("/brands/{id}")
-//    public BrandDTO updateBrand(@PathVariable Long id, @RequestBody Brand brand) {
-//
-//    }
+    @IsEmployee
+    @PatchMapping("/brands/{id}")
+    public BrandDTO updateBrand(@PathVariable Long id, @RequestBody PatchBrandDTO patchBrandDTO) {
+        Brand brand = brandService.findById(id);
 
+        if (patchBrandDTO.getName() != null) {
+                brand.setName(patchBrandDTO.getName());
+        }
+
+        return brandMapper.toDTO(brandService.save(brand));
+    }
 
     @IsEmployee
     @DeleteMapping("/brands/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+        Brand brand = brandService.findById(id);
         brandService.deleteById(id);
+
         return ResponseEntity.ok().body(null);
     }
 

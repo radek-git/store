@@ -3,8 +3,10 @@ package com.radek.store.controllers;
 import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.categories.CategoryDTO;
+import com.radek.store.dto.categories.PatchCategoryDTO;
 import com.radek.store.dto.products.ProductDTO;
 import com.radek.store.entity.Category;
+import com.radek.store.entity.users.Employee;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.CategoryMapper;
 import com.radek.store.mapper.ProductMapper;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Optional.*;
 
 @RestController
 @RequestMapping("/api")
@@ -62,10 +66,6 @@ public class CategoryController {
 
 
 
-//    @GetMapping("/categories/{id}")
-//    public CategoryDTO getById(@PathVariable Long id) {
-//        return categoryMapper.toDTO(categoryService.findById(id));
-//    }
 
 
     @GetMapping("/categories/{id}")
@@ -96,11 +96,19 @@ public class CategoryController {
         return categoryMapper.toDTO(categoryService.save(category));
     }
 
-//    @IsEmployee
-//    @PatchMapping("/categories/{id}")
-//    public CategoryDTO update(@RequestBody Category category) {
-//
-//    }
+    @IsEmployee
+    @PatchMapping("/categories/{id}")
+    public CategoryDTO update(@PathVariable Long id, @RequestBody PatchCategoryDTO patchCategoryDTO) {
+
+        Category category = categoryService.findById(id);
+
+        if (patchCategoryDTO.getName() != null) {
+                category.setName(patchCategoryDTO.getName());
+        }
+
+        return categoryMapper.toDTO(categoryService.save(category));
+
+    }
 
 
     @IsEmployee
