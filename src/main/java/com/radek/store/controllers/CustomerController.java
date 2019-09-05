@@ -116,7 +116,7 @@ public class CustomerController {
 
 
 
-    @IsEmployeeOrCurrentUser
+    @IsAdminOrCurrentUser
     @GetMapping("/customers/{username}/orders/{id}")
     public OrderDTO findOrderById(@PathVariable Long id, @PathVariable String username) {
         Customer customer = customerService.findByUsername(username);

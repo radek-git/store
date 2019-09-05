@@ -1,12 +1,15 @@
 package com.radek.store.controllers;
 
 import com.radek.store.ApiResponse;
-import com.radek.store.annotation.*;
+import com.radek.store.annotation.IsAdmin;
+import com.radek.store.annotation.IsAdminOrEmployee;
+import com.radek.store.annotation.IsEmployee;
+import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
+import com.radek.store.dto.employees.PatchEmployeeDTO;
 import com.radek.store.dto.employees.AuthEmployeeDTO;
 import com.radek.store.dto.employees.EmployeeDTO;
 import com.radek.store.entity.Order;
-import com.radek.store.entity.users.Customer;
 import com.radek.store.entity.users.Employee;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.EmployeeMapper;
@@ -20,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -119,26 +121,45 @@ public class EmployeeController {
 
 
 
+    @IsAdmin
+    @PatchMapping("/employees/{username}")
+    public EmployeeDTO updateEmployee(@PathVariable String username, @RequestBody PatchEmployeeDTO patchEmployeeDTO) {
+        Optional<User> user = userService.getCurrentUser();
+        Employee employee = employeeService.findByUsername(username);
 
-//    @IsEmployee  do zastanowienia czy on powinien być
-//    @PatchMapping("/employee")
-//    public EmployeeDTO updateCurrentEmployee(@RequestBody Employee employee) {
-//        return
-//    }
+        if (patchEmployeeDTO.getName() != null) {
+            employee.setName(patchEmployeeDTO.getName());
+        }
+        if (patchEmployeeDTO.getSurname() != null) {
+            employee.setSurname(patchEmployeeDTO.getSurname());
+        }
+        if (patchEmployeeDTO.getUsername() != null) {
+            employee.setUsername(patchEmployeeDTO.getUsername());
+        }
+
+        if (user.isPresent() && user.get() instanceof Employee) {
+            if (patchEmployeeDTO.getExpired() != null) {
+                employee.setExpired(patchEmployeeDTO.getExpired());
+            }
+            if (patchEmployeeDTO.getLocked() != null) {
+                employee.setLocked(patchEmployeeDTO.getLocked());
+            }
+            if (patchEmployeeDTO.getCredentialsExpired() != null) {
+                employee.setLocked(patchEmployeeDTO.getCredentialsExpired());
+            }
+            if (patchEmployeeDTO.getEnabled() != null) {
+                employee.setEnabled(patchEmployeeDTO.getEnabled());
+            }
+        }
+
+        return employeeMapper.toDTO(employeeService.save(employee));
+    }
 
 
-
-//    @IsAdmin
-    //    @PatchMapping("/employees/{username}")
-//    public EmployeeDTO updateEmployee(@PathVariable String username, @RequestBody Employee employee) {
-//
-//    }
-
-
-//    @IsEmployee
+//    @IsEmployee //- czy to ma sens?
 //    @PatchMapping("/employee/orders/{id} ")
-//    public OrderDTO updateOrderById(@PathVariable Long id) {
-//
+//    public OrderDTO updateOrderById(@PathVariable Long id, @RequestBody PatchOrderDTO patchOrderDTO) {
+//        Order order = orderService.findById(id);
 //    }
 
 
@@ -146,16 +167,9 @@ public class EmployeeController {
     @IsAdmin
     @DeleteMapping("/employees/{username}")
     public ResponseEntity<Object> deleteByUsername(@PathVariable String username) {
-        return ResponseEntity.ok().body(employeeService.deleteByUsername(username));
+        employeeService.deleteByUsername(username);
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK.value(), "Employee deleted"));
     }
-
-
-
-
-
-
-
-
 
 
 }
