@@ -2,11 +2,14 @@ package com.radek.store.controllers;
 
 import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
+import com.radek.store.dto.products.PatchProductDTO;
 import com.radek.store.dto.products.ProductDTO;
+import com.radek.store.entity.Category;
 import com.radek.store.entity.Product;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.EmployeeMapper;
 import com.radek.store.mapper.ProductMapper;
+import com.radek.store.service.CategoryService;
 import com.radek.store.service.ProductService;
 import com.radek.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +27,17 @@ public class ProductController {
     private ProductService productService;
     private ProductMapper productMapper;
     private UserService userService;
+    private CategoryService categoryService;
 
 
 
     @Autowired
     public ProductController(ProductService productService, ProductMapper productMapper,
-                             UserService userService) {
+                             UserService userService, CategoryService categoryService) {
         this.productService = productService;
         this.productMapper = productMapper;
         this.userService = userService;
+        this.categoryService = categoryService;
 
     }
 
@@ -74,11 +79,27 @@ public class ProductController {
         return productMapper.toDTO(productService.save(product));
     }
 
-//    @IsEmployee
-//    @PatchMapping("/products/{id}")
-//    public ProductDTO update(@PathVariable Long id,  @RequestBody Product product) {
-//
-//    }
+    @IsEmployee
+    @PatchMapping("/products/{id}")
+    public ProductDTO update(@PathVariable Long id,  @RequestBody PatchProductDTO patchProductDTO) {
+        Product product = productService.findById(id);
+
+        if (patchProductDTO.getCategory() != null) {
+            Category category = categoryService.findByName(patchProductDTO.getCategory());
+            product.setCategory(category);
+        }
+
+        //todo to samo zrobić do branda
+
+        if (patchProductDTO.getName() != null) {
+            product.setName(patchProductDTO.getName());
+        }
+        if (patchProductDTO.getPrice() != null) {
+            product.setPrice(patchProductDTO.getPrice());
+        }
+
+        return productMapper.toDTO(productService.save(product));
+    }
 
     @IsEmployee
     @DeleteMapping("/products/{id}")
@@ -86,3 +107,5 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.deleteById(id));
     }
 }
+
+//todo napisać testy do repozytoriow

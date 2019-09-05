@@ -1,10 +1,13 @@
 package com.radek.store.controllers;
 
+import com.radek.store.annotation.IsCustomer;
 import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.OrderProductDTO;
+import com.radek.store.dto.PostOrderDTO;
 import com.radek.store.entity.Order;
+import com.radek.store.entity.users.User;
 import com.radek.store.mapper.OrderMapper;
 import com.radek.store.mapper.OrderProductMapper;
 import com.radek.store.mapper.ProductMapper;
@@ -12,12 +15,14 @@ import com.radek.store.security.CurrentCustomer;
 import com.radek.store.security.CurrentEmployee;
 import com.radek.store.service.OrderService;
 import com.radek.store.service.ProductService;
+import com.radek.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -30,12 +35,13 @@ public class OrderController {
     private ProductService productService;
     private ProductMapper productMapper;
     private OrderProductMapper orderProductMapper;
+    private UserService userService;
 
     @Autowired
     public OrderController(OrderService orderService, OrderMapper orderMapper,
                            CurrentCustomer currentCustomer, CurrentEmployee currentEmployee,
                            ProductService productService, ProductMapper productMapper,
-                           OrderProductMapper orderProductMapper) {
+                           OrderProductMapper orderProductMapper, UserService userService) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
         this.currentCustomer = currentCustomer;
@@ -43,6 +49,7 @@ public class OrderController {
         this.productService = productService;
         this.productMapper = productMapper;
         this.orderProductMapper = orderProductMapper;
+        this.userService = userService;
     }
 
     @IsEmployee
@@ -68,13 +75,16 @@ public class OrderController {
             "and #order.customer.username == authentication.principal.username) " +
             "or ((hasRole('ROLE_EMPLOYEE') and #order.employee.username == authentication.principal.username)))")
     @PostMapping("/orders")
-    public OrderDTO postOrder(@RequestBody Order order) {
-        return orderMapper.toDTO(orderService.save(order));
+    public OrderDTO postOrder(@RequestBody PostOrderDTO postOrderDTO) {
+        return orderMapper.toDTO(orderService.save(orderMapper.toEntity(postOrderDTO))); // todo cena calkowita
     }
 
     //klient może usunąć tylko swoje zamówienie
+//    @IsCustomer
 //    @PatchMapping("/orders/{id}")
-//    public OrderDTO update(@RequestBody Order order) {
+//    public OrderDTO update(@PathVariable Long id, @RequestBody PatchOrderDTO patchOrderDTO) {
+//        Optional<User> user = userService.getCurrentUser();
+//        Order customerOrder = orderService.findById(id);
 //
 //    }
 
