@@ -6,7 +6,6 @@ import com.radek.store.dto.brands.BrandDTO;
 import com.radek.store.dto.brands.PatchBrandDTO;
 import com.radek.store.dto.products.ProductDTO;
 import com.radek.store.entity.Brand;
-import com.radek.store.entity.users.Employee;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.BrandMapper;
 import com.radek.store.mapper.ProductMapper;
