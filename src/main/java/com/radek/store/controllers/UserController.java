@@ -1,11 +1,10 @@
 package com.radek.store.controllers;
 
-import com.radek.store.annotation.IsAdmin;
-import com.radek.store.annotation.IsAuthenticated;
-import com.radek.store.annotation.IsEmployeeOrCurrentUser;
-import com.radek.store.annotation.PageableDefaults;
+import com.radek.store.annotation.*;
 import com.radek.store.dto.users.AuthenticatedUserDTO;
+import com.radek.store.dto.users.PatchUserDTO;
 import com.radek.store.dto.users.UserDTO;
+import com.radek.store.entity.users.Employee;
 import com.radek.store.entity.users.User;
 import com.radek.store.mapper.UserMapper;
 import com.radek.store.security.CurrentUser;
@@ -79,14 +78,76 @@ public class UserController {
     }
 
 
+    //do sprawdzenia
+    @IsEmployeeOrCurrentUser
+    @PatchMapping("/users/{username}")
+    public UserDTO updateUser(@PathVariable String username, @RequestBody PatchUserDTO patchUserDTO) {
+        User user = userService.findByUsername(username);
+        Optional<User> currentUser = userService.getCurrentUser();
 
-//    @PatchMapping("/users/{username}")
-//    public UserDTO updateUser(@PathVariable String username, @RequestBody User user) {
-//
-//    }
+        if (patchUserDTO.getName() != null) {
+            user.setName(patchUserDTO.getName());
+        }
+        if (patchUserDTO.getSurname() != null) {
+            user.setSurname(patchUserDTO.getSurname());
+        }
+        if (patchUserDTO.getUsername() != null) {
+            user.setUsername(patchUserDTO.getUsername());
+        }
+        if (patchUserDTO.getEmail() != null) {
+            user.setEmail(patchUserDTO.getEmail());
+        }
+        if (patchUserDTO.getPhoneNumber() != null) {
+            user.setPhoneNumber(patchUserDTO.getPhoneNumber());
+        }
 
-//    @IsAuthenticated
-//    @PatchMapping("/user")
+
+        if (currentUser.isPresent() && currentUser.get() instanceof Employee) {
+            if (patchUserDTO.getExpired() != null) {
+                user.setExpired(patchUserDTO.getExpired());
+            }
+            if (patchUserDTO.getLocked() != null) {
+                user.setLocked(patchUserDTO.getLocked());
+            }
+            if (patchUserDTO.getCredentialsExpired() != null) {
+                user.setCredentialsExpired(patchUserDTO.getCredentialsExpired());
+            }
+            if (patchUserDTO.getEnabled() != null) {
+                user.setEnabled(patchUserDTO.getEnabled());
+            }
+        }
+
+        return userMapper.toDTO(userService.save(user));
+
+
+    }
+
+    //do sprawdzenia
+    @IsAuthenticated
+    @PatchMapping("/user")
+    public UserDTO updateCurrentUser (@PathVariable String username, @RequestBody PatchUserDTO patchUserDTO) {
+        User user = userService.findByUsername(username);
+
+        if (patchUserDTO.getName() != null) {
+            user.setName(patchUserDTO.getName());
+        }
+        if (patchUserDTO.getSurname() != null) {
+            user.setSurname(patchUserDTO.getSurname());
+        }
+        if (patchUserDTO.getUsername() != null) {
+            user.setUsername(patchUserDTO.getUsername());
+        }
+        if (patchUserDTO.getEmail() != null) {
+            user.setEmail(patchUserDTO.getEmail());
+        }
+        if (patchUserDTO.getPhoneNumber() != null) {
+            user.setPhoneNumber(patchUserDTO.getPhoneNumber());
+        }
+
+        return userMapper.toDTO(userService.save(user));
+    }
+
+
 
     @IsEmployeeOrCurrentUser
     @DeleteMapping("/users/{username}")

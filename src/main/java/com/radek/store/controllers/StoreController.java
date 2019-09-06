@@ -5,6 +5,7 @@ import com.radek.store.annotation.IsEmployee;
 import com.radek.store.annotation.PageableDefaults;
 import com.radek.store.dto.OrderDTO;
 import com.radek.store.dto.OrderProductDTO;
+import com.radek.store.dto.stores.PatchStoreDTO;
 import com.radek.store.dto.stores.StoreDTO;
 import com.radek.store.dto.StoreProductDTO;
 import com.radek.store.dto.employees.EmployeeDTO;
@@ -133,11 +134,21 @@ public class StoreController {
     }
 
 
-//    @IsAdmin
-//    @PatchMapping("/stores/{id}")
-//    public StoreDTO update(@RequestBody Store store) {
-//
-//    }
+    @IsAdmin
+    @PatchMapping("/stores/{id}")
+    public StoreDTO update(@PathVariable Long id, @RequestBody PatchStoreDTO patchStoreDTO) {
+        Store store = storeService.findById(id);
+
+        if (patchStoreDTO.getName() != null) {
+            store.setName(patchStoreDTO.getName());
+        }
+        if (patchStoreDTO.getPhoneNumber() != null) {
+            store.setName(patchStoreDTO.getPhoneNumber());
+        }
+
+        return storeMapper.toDTO(storeService.save(store));
+
+    }
 
 
 
