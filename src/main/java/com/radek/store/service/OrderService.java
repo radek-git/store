@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -40,6 +41,9 @@ public class OrderService {
     }
 
     public Order save(Order order) {
+        BigDecimal totalPrice = order.getOrderProducts().stream().map(op -> op.getQuantity().multiply(op.getPrice())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotalPrice(totalPrice);
+
         return orderRepository.save(order);
     }
 

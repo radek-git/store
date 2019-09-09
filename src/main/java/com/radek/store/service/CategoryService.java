@@ -1,6 +1,7 @@
 package com.radek.store.service;
 
 import com.radek.store.entity.Category;
+import com.radek.store.exception.CategoryNotFoundException;
 import com.radek.store.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ public class CategoryService {
 
 
     public Category findByName(String name) {
-        return categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("nie ma"));
+        return categoryRepository.findByName(name).orElseThrow(CategoryNotFoundException::new);
     }
 
     public Category findById(Long id) {

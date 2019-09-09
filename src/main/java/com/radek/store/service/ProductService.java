@@ -1,6 +1,8 @@
 package com.radek.store.service;
 
 import com.radek.store.entity.Product;
+import com.radek.store.exception.BrandNotFoundException;
+import com.radek.store.repository.BrandRepository;
 import com.radek.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +16,12 @@ import java.util.List;
 public class ProductService {
 
     private ProductRepository productRepository;
+    private BrandRepository brandRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, BrandRepository brandRepository) {
         this.productRepository = productRepository;
+        this.brandRepository = brandRepository;
     }
 
 
@@ -41,6 +45,7 @@ public class ProductService {
 
 
     public List<Product> findByBrandId(Long id, Pageable pageable) {
+        brandRepository.findById(id).orElseThrow(BrandNotFoundException::new);
         return productRepository.findAllByBrand_Id(id, pageable);
     }
 

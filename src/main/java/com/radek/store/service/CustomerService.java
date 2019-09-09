@@ -1,11 +1,10 @@
 package com.radek.store.service;
 
 import com.radek.store.entity.users.Customer;
-import com.radek.store.repository.CategoryRepository;
+import com.radek.store.exception.CustomerNotFoundException;
 import com.radek.store.repository.CustomerRepository;
 import com.radek.store.specification.CustomerSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -50,10 +49,10 @@ public class CustomerService {
 
 
     public Customer findByUsername(String username) {
-        return customerRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Nie ma"));
+        return customerRepository.findByUsername(username).orElseThrow(CustomerNotFoundException::new);
     }
 
-    public ResponseEntity<Object> deleteByUsername(String username) {
-        return ResponseEntity.ok().body(customerRepository.deleteByUsername(username));
+    public long deleteByUsername(String username) {
+        return customerRepository.deleteByUsername(username);
     }
 }

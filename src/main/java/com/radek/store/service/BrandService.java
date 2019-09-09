@@ -1,6 +1,7 @@
 package com.radek.store.service;
 
 import com.radek.store.entity.Brand;
+import com.radek.store.exception.BrandNotFoundException;
 import com.radek.store.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -37,11 +38,12 @@ public class BrandService {
 
 
     public Brand findById(Long id) {
-        return brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie ma"));
+        return brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException());
     }
 
     @Transactional
     public void deleteById(Long id) {
+
         brandRepository.deleteById(id);
     }
 

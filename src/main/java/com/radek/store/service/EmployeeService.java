@@ -47,7 +47,7 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public ResponseEntity<Object> deleteByUsername(String username) {
-        return ResponseEntity.ok().body(employeeRepository.deleteByUsername(username));
+    public long deleteByUsername(String username) {
+        return employeeRepository.deleteByUsername(username);
     }
 }

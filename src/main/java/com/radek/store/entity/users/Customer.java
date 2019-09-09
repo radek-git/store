@@ -15,9 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
-
-public class Customer extends User{
-
+public class Customer extends User {
 
     @Builder //pozwala utworzyć obiekt z polami z klasy nadrzędnej i customer
     public Customer(@NonNull String name, @NonNull String surname, @NonNull String username,

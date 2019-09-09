@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Table(name = "products")
@@ -18,7 +19,7 @@ public class Product extends AbstractEntity{
     @NotEmpty
     private String name;
 
-    @NotEmpty
+    @NotNull
     private BigDecimal price;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
